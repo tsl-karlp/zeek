@@ -7,9 +7,11 @@
 #include "Reporter.h"
 #include "util.h"
 
+
 #define BRO_UID_LEN 2
 
 namespace Bro {
+
 
 /**
  * A class for creating/managing UIDs of arbitrary bit-length and converting
@@ -21,14 +23,15 @@ public:
 	/**
 	 * Default ctor.  The UID is uninitialized.
 	 */
-	UID() : initialized(false) {}
+	UID() : id(++UID::global_id) {
+	}
 
 	/**
 	 * Construct a UID of a given bit-length, optionally from given values.
 	 * @see UID::Set
 	 */
-	explicit UID(bro_uint_t bits, const uint64_t* v = 0, size_t n = 0)
-		{ Set(bits, v, n); }
+	explicit UID(bro_uint_t bits, const uint64_t* v = 0, size_t n = 0) : id(++UID::global_id) {
+    }
 
 	/**
 	 * Copy constructor.
@@ -60,7 +63,7 @@ public:
 	 *         and not yet initialized w/ Set().
 	 */
 	explicit operator bool() const
-		{ return initialized; }
+		{ return true; }
 
 	/**
 	 * Assignment operator.
@@ -71,42 +74,39 @@ public:
 	 * UID equality operator.
 	 */
 	friend bool operator==(const UID& u1, const UID& u2)
-		{ return memcmp(u1.uid, u2.uid, sizeof(u1.uid)) == 0; }
+		{ return u1.id == u2.id; }
 
 	/**
 	 * UID inequality operator.
 	 */
 	friend bool operator!=(const UID& u1, const UID& u2)
-		{ return ! ( u1 == u2 ); }
+		{ return u1.id != u2.id ; }
 
 private:
-	uint64_t uid[BRO_UID_LEN];
-	bool initialized; // Since technically uid == 0 is a legit UID
+	uint64_t id;
+	static uint64_t global_id;
+
 };
 
 inline UID::UID(const UID& other)
 	{
-	memcpy(uid, other.uid, sizeof(uid));
-	initialized = other.initialized;
+	    id = other.id;
 	}
 
 inline UID& UID::operator=(const UID& other)
 	{
-	memmove(uid, other.uid, sizeof(uid));
-	initialized = other.initialized;
+	id = other.id;
 	return *this;
 	}
 
 inline std::string UID::Base62(std::string prefix) const
 	{
-	if ( ! initialized )
-		reporter->InternalError("use of uninitialized UID");
-
-	char tmp[sizeof(uid) * 8 + 1];  // enough for even binary representation
-	for ( size_t i = 0; i < BRO_UID_LEN; ++i )
-		prefix.append(uitoa_n(uid[i], tmp, sizeof(tmp), 62));
-
-	return prefix;
+	return std::to_string(id);
 	}
 
+
+
+static const uint64_t uuid[2] = {calculate_unique_id(), calculate_unique_id()};
+
 } // namespace Bro
+
