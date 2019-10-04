@@ -388,6 +388,8 @@ RecordVal* Connection::BuildConnVal()
 		if ( inner_vlan != 0 )
 			conn_val->Assign(10, val_mgr->GetInt(inner_vlan));
 
+//		conn_val->Assign(11, uuid[0]);
+
 		}
 
 	if ( root_analyzer )

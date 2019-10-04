@@ -106,7 +106,5 @@ inline std::string UID::Base62(std::string prefix) const
 
 
 
-static const uint64_t uuid[2] = {calculate_unique_id(), calculate_unique_id()};
-
 } // namespace Bro
 

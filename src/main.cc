@@ -124,6 +124,9 @@ OpaqueType* paraglob_type = 0;
 int bro_argc;
 char** bro_argv;
 
+// UUID
+uint64_t uuid[2];
+
 const char* zeek_version()
 	{
 #ifdef DEBUG
@@ -665,6 +668,12 @@ int main(int argc, char** argv)
 
 	atexit(atexit_handler);
 	set_processing_status("INITIALIZING", "main");
+
+	uuid[0] = calculate_unique_id();
+	uuid[1] = calculate_unique_id();
+
+    std::cout << "Karl says: " << uuid[0] << std::endl;
+    std::cout << "Karl says: " << uuid[1] << std::endl;
 
 	bro_start_time = current_time(true);
 
