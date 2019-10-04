@@ -42,6 +42,7 @@ extern "C" {
 #include "Stats.h"
 #include "Brofiler.h"
 #include "Traverse.h"
+#include "UID.h"
 
 #include "threading/Manager.h"
 #include "input/Manager.h"
@@ -124,8 +125,6 @@ OpaqueType* paraglob_type = 0;
 int bro_argc;
 char** bro_argv;
 
-// UUID
-uint64_t uuid[2];
 
 const char* zeek_version()
 	{
@@ -669,12 +668,6 @@ int main(int argc, char** argv)
 	atexit(atexit_handler);
 	set_processing_status("INITIALIZING", "main");
 
-	uuid[0] = calculate_unique_id();
-	uuid[1] = calculate_unique_id();
-
-    std::cout << "Karl says: " << uuid[0] << std::endl;
-    std::cout << "Karl says: " << uuid[1] << std::endl;
-
 	bro_start_time = current_time(true);
 
 	val_mgr = new ValManager();
@@ -692,6 +685,11 @@ int main(int argc, char** argv)
 #endif
 
 	init_random_seed((seed_load_file && *seed_load_file ? seed_load_file : 0) , seed_save_file);
+
+	// initialize the UUID; need to do it after init_random_seed() because calculate_unique_id() requires it
+	Bro::uuid[0] = calculate_unique_id();
+	Bro::uuid[1] = calculate_unique_id();
+
 	// DEBUG_MSG("HMAC key: %s\n", md5_digest_print(shared_hmac_md5_key));
 	init_hash_function();
 

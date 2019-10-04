@@ -144,7 +144,9 @@ export {
 		## If this connection was over a tunnel, indicate the
 		## *uid* values for any encapsulating parent connections
 		## used over the lifetime of this inner connection.
-		tunnel_parents: set[string] &log &optional;
+		tunnel_parents: set[string] &log;
+		## GUID
+		guid: string &log &optional;
 	};
 
 	## Event that can be handled to access the :zeek:type:`Conn::Info`

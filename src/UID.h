@@ -13,6 +13,9 @@
 namespace Bro {
 
 
+// UUID
+static uint64_t uuid[2];
+
 /**
  * A class for creating/managing UIDs of arbitrary bit-length and converting
  * them to human-readable strings in Base62 format.
@@ -82,6 +85,12 @@ public:
 	friend bool operator!=(const UID& u1, const UID& u2)
 		{ return u1.id != u2.id ; }
 
+
+
+    static std::string Base62(uint64_t uuid[2]);
+
+    static std::string GUID();
+
 private:
 	uint64_t id;
 	static uint64_t global_id;
@@ -103,6 +112,7 @@ inline std::string UID::Base62(std::string prefix) const
 	{
 	return std::to_string(id);
 	}
+
 
 
 
