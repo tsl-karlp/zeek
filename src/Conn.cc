@@ -388,7 +388,9 @@ RecordVal* Connection::BuildConnVal()
 		if ( inner_vlan != 0 )
 			conn_val->Assign(10, val_mgr->GetInt(inner_vlan));
 
-		conn_val->Assign(11, new StringVal(Bro::UID::GUID()));
+        std::string guid = Bro::UID::GUID();
+        std::cout << "guid: " << guid << std::endl;
+		conn_val->Assign(7, new StringVal(guid));
 
 		}
 

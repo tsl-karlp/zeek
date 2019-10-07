@@ -690,6 +690,11 @@ int main(int argc, char** argv)
 	Bro::uuid[0] = calculate_unique_id();
 	Bro::uuid[1] = calculate_unique_id();
 
+
+	std::cout << "main.cc/uuid[0]: " << Bro::uuid[0] << std::endl;
+	std::cout << "main.cc/uuid[1]: " << Bro::uuid[1] << std::endl;
+
+
 	// DEBUG_MSG("HMAC key: %s\n", md5_digest_print(shared_hmac_md5_key));
 	init_hash_function();
 

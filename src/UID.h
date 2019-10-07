@@ -12,9 +12,8 @@
 
 namespace Bro {
 
-
 // UUID
-static uint64_t uuid[2];
+uint64_t uuid[BRO_UID_LEN];
 
 /**
  * A class for creating/managing UIDs of arbitrary bit-length and converting
@@ -90,6 +89,7 @@ public:
     static std::string Base62(uint64_t uuid[2]);
 
     static std::string GUID();
+
 
 private:
 	uint64_t id;
